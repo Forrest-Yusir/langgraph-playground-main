@@ -1,0 +1,56 @@
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, AIMessage
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# 初始化 LLM
+llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0)
+
+# 模拟多轮对话的历史记录
+messages = []
+
+# 定义三个连续的问题
+questions = [
+    "你好，请问你是谁？",
+    "给我讲一个关于程序员的冷笑话。",
+    "刚才那个笑话里的'程序员'如果换成'AI'，笑点在哪里？"
+]
+
+"""
+关于多轮对话的本质：
+
+1. API 是无状态的 (Stateless)：
+   - 模型不记得上一轮的对话内容。
+   - 每次调用 llm.invoke() 都是一次全新的独立请求。
+
+2. 上下文靠客户端维护：
+   - 所谓的"多轮对话"，本质上是客户端将"历史记录 + 最新问题"打包一起发送给模型。
+   - 即用户自己维护一个 messages 列表，每次调用 llm.invoke() 时，将 messages 列表作为参数传入。
+   - 模型通过阅读完整的历史记录，"假装"拥有记忆并生成连贯的回答。
+
+3. 带来的挑战：
+   - Token 消耗：随着对话变长，重复发送的历史内容越来越多，成本和延迟增加。
+   - 窗口限制：受限于模型的 Context Window (如 128k)，无法无限存储，需要进行记忆管理(总结/截断)。
+"""
+
+print("=== 开始多轮对话测试 ===\n")
+
+for i, question in enumerate(questions, 1):
+    print(f"--- Round {i} ---")
+    print(f"👤 User: {question}")
+    
+    # 1. 将用户问题加入历史
+    messages.append(HumanMessage(content=question))
+    
+    # 2. 调用 LLM (传入完整历史)
+    response = llm.invoke(messages)
+    
+    # 3. 打印回答
+    print(f"🤖 AI:   {response.content}\n")
+    
+    # 4. 将 AI 回答加入历史，以便下一轮能记住上下文
+    messages.append(response)
+
+print("=== 对话结束 ===")
+print(messages)
