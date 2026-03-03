@@ -32,7 +32,7 @@ load_dotenv()
 # 全局状态
 class OverallState(TypedDict):
     topic: str
-    subjects: Annotated[List[str], operator.add]
+    subjects: Annotated[List[str], operator.add]# 安全追加
     jokes: Annotated[List[str], operator.add]
     final_report: str
     # [新增]: 为了支持 Audit Log，我们加入 messages 列表
