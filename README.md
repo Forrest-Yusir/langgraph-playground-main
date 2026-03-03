@@ -70,3 +70,7 @@
 - **[10_plan_and_execute.py](tutorials/10_plan_and_execute.py)**
   - 规划与执行：Plan-and-Execute 模式。
   - 核心概念：Planner (规划)、Executor (执行)、Re-Planner (反思与动态调整) 的闭环循环，处理长链路复杂任务。
+
+使用python安装包环境
+激活环境：.\.venv\Scripts\Activate.ps1
+运行demo: python .\tutorials\10_plan_and_execute.py
