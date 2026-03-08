@@ -34,6 +34,7 @@
 - **[06_parallelism_map_reduce.py](tutorials/06_parallelism_map_reduce.py)**
   - 并行处理：Map-Reduce 模式。
   - 核心概念：`Send` API 实现动态并行分支 (Map)、`operator.add` 聚合器 (Reduce)、并发状态管理。
+  - 个人笔记：流事件顺序（ ✅Worker['xx'] finished a task.）与最终messages顺序(AUDIT LOG)不一致原因是事件流先于状态持久化。
 
 - **[07_hybrid_subgraphs.py](tutorials/07_hybrid_subgraphs.py)**
   - 混合架构：父子图 (Subgraphs) 嵌套。
@@ -70,3 +71,7 @@
 - **[10_plan_and_execute.py](tutorials/10_plan_and_execute.py)**
   - 规划与执行：Plan-and-Execute 模式。
   - 核心概念：Planner (规划)、Executor (执行)、Re-Planner (反思与动态调整) 的闭环循环，处理长链路复杂任务。
+
+使用python安装包环境
+激活环境：.\.venv\Scripts\Activate.ps1
+运行demo: python .\tutorials\10_plan_and_execute.py
